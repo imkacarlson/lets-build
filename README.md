@@ -8,7 +8,7 @@
    * [Java JDK Version 11.x.x](https://adoptopenjdk.net/) (This is the recommended version but Java 8 and above should also work)
    * [Apache Maven](https://maven.apache.org/)
 
-# Hour 1 - Build a FHIR Data Mapper
+# Hour 1 - Build a FHIR Data Mapper :heavy_check_mark:
 
 **Rationale:** When adopting FHIR, a common scenario is needing to convert your existing data into the FHIR model. This can be a challenging first step, but if you approach it systematically it can be easy. 
 

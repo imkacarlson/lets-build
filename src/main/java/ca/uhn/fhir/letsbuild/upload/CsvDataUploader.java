@@ -1,10 +1,12 @@
 package ca.uhn.fhir.letsbuild.upload;
 
+import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.parser.IParser;
 import com.google.common.base.Charsets;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.math.BigDecimal;
 
 public class CsvDataUploader {
 
@@ -77,6 +80,43 @@ public class CsvDataUploader {
                 // Create a Patient resource, and 3 Observation resources, and
                 // log them to the console.
 
+                // Creating Patient resource
+                Patient patient = new Patient();
+                patient.addIdentifier().setValue(patientId);
+
+                HumanName name = patient.addName();
+                name.setFamily(patientFamilyName);
+                StringType given = name.addGivenElement();
+                given.setValue(patientGivenName);
+
+                if (patientGender == "M") {
+                    patient.setGender(Enumerations.AdministrativeGender.MALE);
+                } else {
+                    patient.setGender(Enumerations.AdministrativeGender.FEMALE);
+                }
+
+                FhirContext ctx = FhirContext.forR4();
+                IParser jsonParser = ctx.newJsonParser();
+                ourLog.info("Created Patient resource: " + jsonParser.encodeResourceToString(patient));
+
+                // Creating WBC Observation
+                Observation observationWbc = new Observation();
+                observationWbc.addIdentifier().setValue("wbc-" + seqN);
+                observationWbc.setStatus(Observation.ObservationStatus.FINAL);
+                Coding wbcCode = new Coding()
+                        .setSystem("http://loinc.org")
+                        .setCode("789-8")
+                        .setDisplay("Erythrocytes [#/volume] in Blood by Automated count");
+                observationWbc.getCode().addCoding(wbcCode);
+
+                Quantity wbcValue = new SimpleQuantity()
+                        .setSystem("http://unitsofmeasure.org")
+                        .setUnit("10*6/uL")
+                        .setCode("10*6/uL")
+                        .setValue(new BigDecimal(wbc));
+                observationWbc.setValue(wbcValue);
+
+                ourLog.info("Created WBC Observation resource: " + jsonParser.encodeResourceToString(observationWbc));
             }
         }
     }
