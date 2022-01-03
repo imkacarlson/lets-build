@@ -23,7 +23,7 @@ import org.hl7.fhir.r4.model.SimpleQuantity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CsvDataUploader_Day2_start {
+public class    CsvDataUploader_Day2_start {
 
     private static final Logger ourLog = LoggerFactory.getLogger(CsvDataUploader_Day2_start.class);
 
@@ -31,7 +31,10 @@ public class CsvDataUploader_Day2_start {
 
         // The following code creates a FHIR client - You can create one client and reuse it
         // for all requests.
-        //TODO: create ctx and client with ServerBaseUrl: http://hapi.fhir.org/baseR4
+        FhirContext ctx = FhirContext.forR4();
+        String serverBase = "http://hapi.fhir.org/baseR4";
+
+        IGenericClient client = ctx.newRestfulGenericClient(serverBase);
 
         // This line adds a "logging interceptor" which causes the client to output some details
         // about its actions to the console
