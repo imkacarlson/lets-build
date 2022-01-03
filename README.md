@@ -57,20 +57,20 @@ Note the columns:
 
 * You can use the SEQN column as the resource ID for the Observation resources, but you will need to append something to it since there are 3 Observations per row.
 
-# Hour 2 - Upload the Resources to a FHIR Server
+# Hour 2 - Upload the Resources to a FHIR Server :heavy_check_mark:
 
-* Create a FHIR Client:
+* Create a FHIR Client: :heavy_check_mark:
 
   * Using the instructions here: https://hapifhir.io/hapi-fhir/docs/client/generic_client.html
   * Use the public hapi server URL: http://hapi.fhir.org/baseR4
 
-* For each row, create the Patient resource. Use an Update (PUT) operation so that you can control the ID of the patient resource. For example, you might want *Marge Simpson* to have a resource ID of "Patient/PT00002"
+* For each row, create the Patient resource. Use an Update (PUT) operation so that you can control the ID of the patient resource. For example, you might want *Marge Simpson* to have a resource ID of "Patient/PT00002" :heavy_check_mark:
 
-* For each row, create 3 Observation resources, one for each of the 3 tests.
+* For each row, create 3 Observation resources, one for each of the 3 tests. :heavy_check_mark:
 
-* validate the resources against the server with your client
+* validate the resources against the server with your client :heavy_check_mark:
 
-* validate the resource using the hapi validation stack: https://hapifhir.io/hapi-fhir/docs/client/generic_client.html#extended-operations (4.2.11Extended Operations)
+* validate the resource using the hapi validation stack: https://hapifhir.io/hapi-fhir/docs/client/generic_client.html#extended-operations (4.2.11Extended Operations) :heavy_check_mark:
 
 # Bonus - Secure Your FHIR Server
 
