@@ -13,14 +13,7 @@ import java.math.BigDecimal;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.Enumerations;
-import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.Patient;
-import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Reference;
-import org.hl7.fhir.r4.model.SimpleQuantity;
+import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,6 +96,7 @@ public class    CsvDataUploader_Day2_start {
 
                 // Create the RBC Observation
                 Observation rbcObservation = new Observation();
+                rbcObservation.getText().setDivAsString("...narrative here...");
                 rbcObservation.setId("Observation/rbc-" + seqN);
                 rbcObservation.setStatus(Observation.ObservationStatus.FINAL);
                 rbcObservation.setEffective(new DateTimeType(timestamp));
@@ -118,6 +112,21 @@ public class    CsvDataUploader_Day2_start {
                     .setValue(new BigDecimal(rbc));
                 rbcObservation.setValue(rbcValue);
                 rbcObservation.setSubject(new Reference("Patient/" + patientId));
+
+                // Validate RBC resource against the server
+                // https://hapifhir.io/hapi-fhir/docs/client/generic_client.html#extended-operations
+                // Validate the resource
+
+                // I'm curious as to why this try-catch is needed, accoridng to link above I should
+                // be getting a OperationOutcome but it looks like I have to nest in the try-catch
+                // to handle validation issues
+                try {
+                    MethodOutcome rbcValidateOutcome = client.validate()
+                            .resource(rbcObservation)
+                            .execute();
+                } catch (Exception e){
+                    System.out.println("Validation error: " + e.toString());
+                }
 
                 //TODO: Upload the RBC Observation resource using a client-assigned ID create
 
