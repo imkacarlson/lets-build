@@ -1,6 +1,7 @@
 package ca.uhn.fhir.letsbuild.upload;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.rest.api.MethodOutcome;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.client.interceptor.LoggingInterceptor;
 import com.google.common.base.Charsets;
@@ -89,7 +90,9 @@ public class    CsvDataUploader_Day2_start {
                 }
 
                 // Upload the patient resource using a client-assigned ID create
-                //TODO: implement here
+                MethodOutcome outcome = client.update()
+                        .resource(patient)
+                        .execute();
 
                 // White blood cell count - This corresponds to LOINC code:
                 // Code:        6690-2
